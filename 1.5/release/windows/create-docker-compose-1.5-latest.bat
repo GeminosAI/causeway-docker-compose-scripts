@@ -13,7 +13,7 @@ cd ..
 del docker-compose.yml
 echo services:>>docker-compose.yml
 echo   typedb:>>docker-compose.yml
-echo     image: public.ecr.aws/r5d0x2q7/typedb:latest>>docker-compose.yml
+echo     image: vaticle/typedb:2.18.0>>docker-compose.yml
 echo     container_name: typedb>>docker-compose.yml
 echo     volumes:>>docker-compose.yml
 echo       - "geminos:/data/typedb:rw">>docker-compose.yml
@@ -24,7 +24,7 @@ echo     restart: always>>docker-compose.yml
 echo     extra_hosts:>>docker-compose.yml
 echo       - "host.docker.internal:host-gateway">>docker-compose.yml
 echo   gui:>>docker-compose.yml
-echo     image: public.ecr.aws/r5d0x2q7/causewaygui:latest>>docker-compose.yml
+echo     image: public.ecr.aws/r5d0x2q7/causewaygui:1.5>>docker-compose.yml
 echo     container_name: "causewaygui">>docker-compose.yml
 echo     volumes:>>docker-compose.yml
 echo       - "geminos:/data:rw">>docker-compose.yml
@@ -38,7 +38,7 @@ echo     restart: always>>docker-compose.yml
 echo     extra_hosts:>>docker-compose.yml
 echo       - "host.docker.internal:host-gateway">>docker-compose.yml
 echo   api:>>docker-compose.yml
-echo     image: public.ecr.aws/r5d0x2q7/causewayapi:latest>>docker-compose.yml
+echo     image: public.ecr.aws/r5d0x2q7/causewayapi:1.5>>docker-compose.yml
 echo     container_name: "causewayapi">>docker-compose.yml
 echo     volumes:>>docker-compose.yml
 @REM echo       - "geminos:/data/causal-api-server/geminosnb:rw">>docker-compose.yml
