@@ -1,0 +1,62 @@
+@echo off
+set rootfolder=%USERPROFILE%\Desktop
+set rootfolder=%rootfolder:\=/%
+cd %rootfolder%
+md causeway
+cd causeway
+md volumes
+cd volumes
+md frontend
+md backend
+md typedb
+cd ..
+del docker-compose.yml
+echo services:>>docker-compose.yml
+echo   typedb:>>docker-compose.yml
+echo     image: public.ecr.aws/r5d0x2q7/typedb:latest>>docker-compose.yml
+echo     container_name: typedb>>docker-compose.yml
+echo     volumes:>>docker-compose.yml
+echo       - "geminos:/data/typedb:rw">>docker-compose.yml
+echo       - "%rootfolder%/causeway/volumes/typedb:/typedb:rw">>docker-compose.yml
+echo     ports:>>docker-compose.yml
+echo       - "1729:1729">>docker-compose.yml
+echo     restart: always>>docker-compose.yml
+echo     extra_hosts:>>docker-compose.yml
+echo       - "host.docker.internal:host-gateway">>docker-compose.yml
+echo   gui:>>docker-compose.yml
+echo     image: public.ecr.aws/r5d0x2q7/causewaygui:latest>>docker-compose.yml
+echo     container_name: "causewaygui">>docker-compose.yml
+echo     volumes:>>docker-compose.yml
+echo       - "geminos:/data:rw">>docker-compose.yml
+echo       - "geminos:/root:rw">>docker-compose.yml
+echo       - "%rootfolder%/causeway/volumes/frontend:/frontend:rw">>docker-compose.yml
+echo     ports:>>docker-compose.yml
+echo       - "1880:1880">>docker-compose.yml
+echo     depends_on:>>docker-compose.yml
+echo       - "typedb">>docker-compose.yml
+echo     restart: always>>docker-compose.yml
+echo     extra_hosts:>>docker-compose.yml
+echo       - "host.docker.internal:host-gateway">>docker-compose.yml
+echo   api:>>docker-compose.yml
+echo     image: public.ecr.aws/r5d0x2q7/causewayapi:1.5-ipynb-fix>>docker-compose.yml
+echo     container_name: "causewayapi">>docker-compose.yml
+echo     volumes:>>docker-compose.yml
+@REM echo       - "geminos:/data/causal-api-server/geminosnb:rw">>docker-compose.yml
+echo       - "geminos:/data:rw">>docker-compose.yml
+echo       - "geminos:/root:rw">>docker-compose.yml
+echo       - "%rootfolder%/causeway/volumes/backend:/backend:rw">>docker-compose.yml
+echo       - "%rootfolder%/causeway/volumes/backend:/data:rw">>docker-compose.yml
+echo     restart: "always">>docker-compose.yml
+echo     ports:>>docker-compose.yml
+echo       - "5001:5001">>docker-compose.yml
+echo     depends_on:>>docker-compose.yml
+echo       - "gui">>docker-compose.yml
+echo       - "typedb">>docker-compose.yml
+echo     extra_hosts:>>docker-compose.yml
+echo       - "host.docker.internal:host-gateway">>docker-compose.yml
+echo volumes:>>docker-compose.yml
+echo   geminos:>>docker-compose.yml
+echo     driver: local>>docker-compose.yml
+pause
+docker compose up -d --pull always
+pause

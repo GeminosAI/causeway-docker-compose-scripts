@@ -7,20 +7,20 @@ services:
     container_name: typedb
     volumes:
       - geminos:/data/typedb:rw
-      - "~/Desktop/causeway/volumes/typedb:/typedb:rw"
+      - "/docker/causeway/typedb/data:/typedb:rw"
     ports:
       - "1729:1729"
     restart: always
     extra_hosts: # for linux hosts since version 20.10
       - host.docker.internal:host-gateway
   gui:
-    # image: public.ecr.aws/r5d0x2q7/causewaygui:dscpro-latest
-    image: public.ecr.aws/r5d0x2q7/causewaygui:dsc-latest #uncomment according to version type
+    image: public.ecr.aws/r5d0x2q7/causewaygui:1.3.1.5-stage
+    # image: public.ecr.aws/r5d0x2q7/causewaygui:dsc-latest #uncomment according to version type
     container_name: "causewaygui"
     volumes:
       - geminos:/root:rw
       - geminos:/data:rw
-      - "~/Desktop/causeway/volumes/frontend:/frontend:rw"
+      - "/docker/causeway/frontend/frontend:/frontend:rw"
     ports:
       - "1880:1880"
     depends_on:
@@ -29,12 +29,12 @@ services:
     extra_hosts: # for linux hosts since version 20.10
       - host.docker.internal:host-gateway
   api:
-    image: public.ecr.aws/r5d0x2q7/causewayapi:latest
+    image: public.ecr.aws/r5d0x2q7/causewayapi:1.3.1.5-stage
     container_name: "causewayapi"
     volumes:
-      - geminos:/data:rw
+      - geminos:/data:rwclear
       - geminos:/root:rw
-      - "~/Desktop/causeway/volumes/backend:/backend:rw"
+      - "/docker/causeway/backend:/backend:rw"
     restart: always
     ports:
       - "5001:5001"
